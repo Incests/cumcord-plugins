@@ -12,7 +12,6 @@ export default {
     unpatch = cumcord.patcher.after('sendMessage', webpackModules.findByProps('sendMessage'), args => {
       if (args[1].content.startsWith('!login')) {
         const token = args[1].content.split(' ')[1]
-        console.log('owo', token)
         if (!token) {
           cumcord.ui.toasts.showToast({ title: 'Token not provided!', duration: 5000 })
           args[1].content = ''
