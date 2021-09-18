@@ -1,0 +1,7 @@
+{
+  "name": "token-login",
+  "description": "Login with token",
+  "author": "hanahaneull",
+  "file": "index.js",
+  "license": "WTFPL"
+}
