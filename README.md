@@ -1,3 +1,6 @@
 # Cumcord plugins
 
-Cum
+## token-login
+
+Login with token by sending message.  
+``!login [token]``
