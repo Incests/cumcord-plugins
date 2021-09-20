@@ -1,5 +1,5 @@
 import { webpackModules } from '@cumcord/modules'
-import { instead } from '@cumcord/patcher'
+import { after } from '@cumcord/patcher'
 const { getChannelId } = webpackModules.findByProps('getChannelId')
 const { getUser } = webpackModules.findByProps('getUser')
 const sendMessage = webpackModules.findByProps('sendMessage')
@@ -9,15 +9,14 @@ let unpatch
 
 const spawnClyde = (message) => {
   const channelId = getChannelId()
-  const { avatar, bot, discriminator, id } = getUser('1')
   receiveMessage(channelId, {
     channel_id: channelId,
     author: {
-      avatar,
-      bot,
-      discriminator,
+      avatar: 'clyde',
+      bot: true,
+      discriminator: '0000',
       username: 'FakeMessage',
-      id
+      id: '1'
     },
     content: message,
     id: (+new Date() - 1420070400000) * 4194304,
@@ -39,33 +38,40 @@ const spawnClyde = (message) => {
 
 export default {
   onLoad () {
-    console.log('cumcord', 'FakeMessage loaded!')
-    unpatch = instead('sendMessage', sendMessage, (args, org) => {
+    unpatch = after('sendMessage', sendMessage, (args) => {
       let arg = args[1].content.split(' ')
       if (arg[0] === '!fake') {
         arg = args[1].content.split(' ')
         if (isNaN(arg[1])) {
-          return spawnClyde('Invalid USERID!\nExample: ```!fake [USERID] [MESSAGE]```')
+          args[1].content = ''
+          spawnClyde('Invalid USERID!\nExample: ```!fake [USERID] [MESSAGE]```')
+          return
         }
         const channelId = getChannelId()
-        // TODO: Fix unable to send message in current channel when
-        //       USERID is not found
-        //       Fix: Switch to another channel and come back again
-        //            will unlock the textbox
-        const { avatar, bot, discriminator, username, id } = getUser(arg[1] || '1')
-        if (username === 'Clyde' || typeof avatar === 'undefined') {
-          return spawnClyde('Invalid argument!\nExample: ```!fake [USERID] [MESSAGE]```')
+        let author = {
+          avatar: 'clyde',
+          bot: true,
+          discriminator: '0000',
+          username: 'FakeMessage',
+          id: '1'
         }
-        // TODO: Make the user somehow clickable
-        receiveMessage(channelId, {
-          author: {
+        let failed = false
+        try {
+          const { avatar, bot, discriminator, username, id } = getUser(arg[1])
+          author = {
             avatar,
             bot,
             discriminator,
             username,
             id
-          },
-          content: arg.slice(2).join(' ') || 'I\'m stupid, cause I can\'t read the example',
+          }
+        } catch (e) {
+          failed = true
+        }
+        // TODO: Make the user somehow clickable
+        receiveMessage(channelId, {
+          author,
+          content: failed ? 'Unable to fetch user' : arg.slice(2).join(' '),
           id: (+new Date() - 1420070400000) * 4194304,
           timestamp: new Date().toISOString(),
           attachment: [],
@@ -80,7 +86,8 @@ export default {
           tts: false,
           type: 0
         })
-      } else org(...args)
+        args[1].content = ''
+      }
     })
   },
 
