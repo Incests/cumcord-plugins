@@ -42,11 +42,16 @@ export default {
       let arg = args[1].content.split(' ')
       if (arg[0] === '!fake') {
         arg = args[1].content.split(' ')
-        if (isNaN(arg[1])) {
+        let target = arg[1]
+        console.log('cumcord', target.startsWith('<@!'))
+        // TODO: Search discord userid regex. <@63453745645654>  -->  63453745645654
+        if (!target.startsWith('<@!') && isNaN(target)) {
           args[1].content = ''
-          spawnClyde('Invalid USERID!\nExample: ```!fake [USERID] [MESSAGE]```')
+          spawnClyde('Invalid USERID!\nExample: ```!fake [USERID/@mention] [MESSAGE]```')
           return
         }
+        target = target.replace('<@!', '').replace('>', '') // See line 46
+        console.log('cumcord', target === '480380200031486040')
         const channelId = getChannelId()
         let author = {
           avatar: 'clyde',
@@ -57,7 +62,7 @@ export default {
         }
         let failed = false
         try {
-          const { avatar, bot, discriminator, username, id } = getUser(arg[1])
+          const { avatar, bot, discriminator, username, id } = getUser(target)
           author = {
             avatar,
             bot,
@@ -68,7 +73,7 @@ export default {
         } catch (e) {
           failed = true
         }
-        // TODO: Make the user somehow clickable
+        // TODO: Make the user somehow clickable & have role color
         receiveMessage(channelId, {
           author,
           content: failed ? 'Unable to fetch user' : arg.slice(2).join(' '),
