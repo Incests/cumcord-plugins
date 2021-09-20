@@ -1,0 +1,7 @@
+{
+  "name": "FakeMessage",
+  "description": "Create fake message",
+  "author": "hanahaneull",
+  "file": "index.js",
+  "license": "WTFPL"
+}
