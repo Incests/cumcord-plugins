@@ -43,7 +43,6 @@ export default {
       if (arg[0] === '!fake') {
         arg = args[1].content.split(' ')
         let target = arg[1]
-        console.log('cumcord', target.startsWith('<@!'))
         // TODO: Search discord userid regex. <@63453745645654>  -->  63453745645654
         if (!target.startsWith('<@!') && isNaN(target)) {
           args[1].content = ''
@@ -51,7 +50,6 @@ export default {
           return
         }
         target = target.replace('<@!', '').replace('>', '') // See line 46
-        console.log('cumcord', target === '480380200031486040')
         const channelId = getChannelId()
         let author = {
           avatar: 'clyde',
