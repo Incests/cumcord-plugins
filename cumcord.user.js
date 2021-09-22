@@ -1,11 +1,27 @@
 // ==UserScript==
 // @name         Cumcord Injector
-// @version      0.1
+// @version      0.2
 // @description  Cumcord Injector
 // @author       hanahaneull
-// @match        https://discord.com/*
-// @match        https://canary.discord.com/*
-// @match        https://ptb.discord.com/*
+// @homepage     https://github.com/Incests/cumcord-plugins
+// @supportURL   https://github.com/Incests/cumcord-plugins/issues
+// @updateURL    https://raw.githubusercontent.com/Incests/cumcord-plugins/master/cumcord.user.js
+// @downloadURL  https://raw.githubusercontent.com/Incests/cumcord-plugins/master/cumcord.user.js
+// @match        https://discord.com/app
+// @match        https://discord.com/login
+// @match        https://discord.com/users/*
+// @match        https://discord.com/register
+// @match        https://discord.com/channels/*
+// @match        https://canary.discord.com/app
+// @match        https://canary.discord.com/login
+// @match        https://canary.discord.com/users/*
+// @match        https://canary.discord.com/register
+// @match        https://canary.discord.com/channels/*
+// @match        https://ptb.discord.com/app
+// @match        https://ptb.discord.com/login
+// @match        https://ptb.discord.com/users/*
+// @match        https://ptb.discord.com/register
+// @match        https://ptb.discord.com/channels/*
 // @icon         https://www.google.com/s2/favicons?domain=discord.com
 // @grant        none
 // ==/UserScript==
